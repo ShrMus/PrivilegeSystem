@@ -95,7 +95,6 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 	 * @param allocationPrivilegeList
 	 */
 	private void allocationRolePrivileges(Integer roleId, List<Integer> allocationPrivilegeList) {
-		// TODO 角色添加或删除权限后，对应角色的用户的权限也要添加和删除
 		// 根据id获得所有的权限
 		List<Privilege> privilegeList = privilegeMapper.getPrivilegeListByRoleId(roleId);
 		// 如果已有权限为空就全添加到数据库
@@ -129,39 +128,79 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 				}
 			}
 			// 再将角色已经存在的权限，但是没有再被分配的权限删除,privilegeArray是否包含已有的权限
+			/*
+			 	删除角色的权限之后先删除拥有这个角色的用户的权限
+			 	查找拥有这个角色的用户
+				查找用户的其他角色
+				查找用户其他角色的权限
+				其他权限没有就删除，有就什么都不做
+			 */
 			for(Integer privilegeId : ownedPrivilegeList) {
 				// 如果角色原来分配的权限不在现在被分配的权限集合中，就删除这个权限，如果还在，就什么都不做
 				if(false == allocationPrivilegeList.contains(privilegeId)) {
-					RolePrivilegeExample rolePrivilegeExample = new RolePrivilegeExample();
-					com.shrmus.pojo.RolePrivilegeExample.Criteria criteria = rolePrivilegeExample.createCriteria();
-					criteria.andRoleIdEqualTo(roleId);
-					criteria.andPrivilegeIdEqualTo(privilegeId);
-					rolePrivilegeMapper.deleteByExample(rolePrivilegeExample);
-					
 					// 给拥有这个角色的用户删除这个权限
-					
 					// 查找拥有这个角色的用户
 					UserRoleExample userRoleExample = new UserRoleExample();
 					com.shrmus.pojo.UserRoleExample.Criteria userRoleExampleCriteria = userRoleExample.createCriteria();
 					userRoleExampleCriteria.andRoleIdEqualTo(roleId);
 					List<UserRole> userRoleList = userRoleMapper.selectByExample(userRoleExample);
 					
-					UserPrivilegeExample userPrivilegeExample = new UserPrivilegeExample();
-					com.shrmus.pojo.UserPrivilegeExample.Criteria userPrivilegeExampleCriteria = userPrivilegeExample.createCriteria();
+					// 标志
+					boolean tag1 = false;
+					// 查找这个用户的其他角色
 					for(UserRole userRole : userRoleList) {
-						
-						// 查找这个用户的其他角色是否有这个权限,如果有,什么都不管,如果没有,将用户的这个权限删除
 						UserRoleExample userRoleExample2 = new UserRoleExample();
 						com.shrmus.pojo.UserRoleExample.Criteria userRoleExampleCriteria2 = userRoleExample2.createCriteria();
 						userRoleExampleCriteria2.andUserIdEqualTo(userRole.getUserId());
 						List<UserRole> userRoleList2 = userRoleMapper.selectByExample(userRoleExample2);
 						
+						// 标志2
+						boolean tag2 = false;
+						// 查找用户其他角色的权限
+						for(UserRole userRole2 : userRoleList2) {
+							// 当前角色不再判断
+							if(roleId != userRole2.getRoleId()) {
+								// 根据角色id和权限id查找，只有一条记录
+								RolePrivilegeExample rolePrivilegeExample = new RolePrivilegeExample();
+								com.shrmus.pojo.RolePrivilegeExample.Criteria criteria = rolePrivilegeExample.createCriteria();
+								criteria.andRoleIdEqualTo(userRole2.getRoleId());
+								criteria.andPrivilegeIdEqualTo(privilegeId);
+								List<RolePrivilege> rolePrivilegeList = rolePrivilegeMapper.selectByExample(rolePrivilegeExample);
+								// 这个用户的其他角色也有这个权限
+								if(0 != rolePrivilegeList.size()) {
+									tag2 = true;
+									break;
+								}
+									
+							}
+							// 标志这个用户的其他角色有这个权限
+							if(true == tag2) {
+								tag1 = true;
+								break;
+							}
+						}
 						
-						userPrivilegeExampleCriteria.andUserIdEqualTo(userRole.getUserId());
-						userPrivilegeExampleCriteria.andPrivilegeIdEqualTo(privilegeId);
-						// TODO 没有考虑用户的其他角色有这个权限的情况
+						if(true == tag1) {
+							break;
+						}
+					}
+					// 用户的其他角色没有这个权限
+					if(false == tag1) {
+						// 在用户权限表中删除这个权限
+						UserPrivilegeExample userPrivilegeExample = new UserPrivilegeExample();
+						com.shrmus.pojo.UserPrivilegeExample.Criteria criteria = userPrivilegeExample.createCriteria();
+						for(UserRole userRole : userRoleList) {
+							criteria.andUserIdEqualTo(userRole.getUserId());
+							criteria.andPrivilegeIdEqualTo(privilegeId);
+						}
 						userPrivilegeMapper.deleteByExample(userPrivilegeExample);
 					}
+					// 删除角色的权限
+					RolePrivilegeExample rolePrivilegeExample = new RolePrivilegeExample();
+					com.shrmus.pojo.RolePrivilegeExample.Criteria criteria = rolePrivilegeExample.createCriteria();
+					criteria.andRoleIdEqualTo(roleId);
+					criteria.andPrivilegeIdEqualTo(privilegeId);
+					rolePrivilegeMapper.deleteByExample(rolePrivilegeExample);
 				}
 			}
 		}
