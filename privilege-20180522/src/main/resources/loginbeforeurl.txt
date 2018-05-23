@@ -1,0 +1,13 @@
+/privilege/list
+/privilege/add
+/privilege/update
+/privilege/delete
+/role/add
+/role/list
+/role/update
+/role/delete
+/user/add
+/user/delete
+/user/update
+/user/list
+/user/info

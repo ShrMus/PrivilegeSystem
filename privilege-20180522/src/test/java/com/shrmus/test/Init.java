@@ -50,7 +50,7 @@ public class Init {
 		privilegeService.addPrivilege(privilegeupdate);
 		
 		// 删除权限
-		Privilege privilegedelete = new Privilege("修改权限", "/privilege/delete");
+		Privilege privilegedelete = new Privilege("删除权限", "/privilege/delete");
 		privilegedelete.setParentPrivilege(privilegemanager);
 		privilegedelete.setPrivilegeParentId(privilegemanager.getPrivilegeId());
 		privilegeService.addPrivilege(privilegedelete);
@@ -62,7 +62,7 @@ public class Init {
 		privilegeService.addPrivilege(privilegeallocation);
 		
 		// 权限列表
-		Privilege privilegelist = new Privilege("分配权限","/privilege/list");
+		Privilege privilegelist = new Privilege("权限列表","/privilege/list");
 		privilegelist.setParentPrivilege(privilegemanager);
 		privilegelist.setPrivilegeParentId(privilegemanager.getPrivilegeId());
 		privilegeService.addPrivilege(privilegelist);

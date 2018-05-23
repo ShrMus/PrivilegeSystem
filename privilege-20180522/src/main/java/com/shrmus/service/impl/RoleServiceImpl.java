@@ -60,6 +60,19 @@ public class RoleServiceImpl implements RoleService{
 		Role role = roleList.get(0);
 		return role;
 	}
+	
+	/**
+	 * 根据角色id获取角色信息
+	 */
+	@Override
+	public Role getRoleById(Integer roleId) {
+		RoleExample roleExample = new RoleExample();
+		com.shrmus.pojo.RoleExample.Criteria criteria = roleExample.createCriteria();
+		criteria.andRoleIdEqualTo(roleId);
+		List<Role> roleList = roleMapper.selectByExample(roleExample);
+		Role role = roleList.get(0);
+		return role;
+	}
 
 	/**
 	 * 查找所有角色

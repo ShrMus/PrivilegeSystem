@@ -42,6 +42,18 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 	private UserRoleMapper userRoleMapper;
 
 	/**
+	 * 查找所有父权限
+	 */
+	@Override
+	public List<Privilege> getParentPrivilegeList() {
+		PrivilegeExample privilegeExample = new PrivilegeExample();
+		Criteria criteria = privilegeExample.createCriteria();
+		criteria.andPrivilegeParentIdEqualTo(0);
+		List<Privilege> privilegeList = privilegeMapper.selectByExample(privilegeExample);
+		return privilegeList;
+	}
+	
+	/**
 	 * 查找所有权限
 	 */
 	@Override
@@ -67,6 +79,20 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 		PrivilegeExample privilegeExample = new PrivilegeExample();
 		Criteria criteria = privilegeExample.createCriteria();
 		criteria.andPrivilegeNameEqualTo(privilegeName);
+		List<Privilege> privilegeList = privilegeMapper.selectByExample(privilegeExample);
+		// 数据库没有设置唯一约束，但是添加时按照权限名唯一的约定，所以获取根据权限名获取时只获得一条记录
+		Privilege privilege = privilegeList.get(0);
+		return privilege;
+	}
+	
+	/**
+	 * 根据权限id查找权限信息
+	 */
+	@Override
+	public Privilege getPrivilegeById(Integer privilegeId) {
+		PrivilegeExample privilegeExample = new PrivilegeExample();
+		Criteria criteria = privilegeExample.createCriteria();
+		criteria.andPrivilegeIdEqualTo(privilegeId);
 		List<Privilege> privilegeList = privilegeMapper.selectByExample(privilegeExample);
 		// 数据库没有设置唯一约束，但是添加时按照权限名唯一的约定，所以获取根据权限名获取时只获得一条记录
 		Privilege privilege = privilegeList.get(0);
@@ -292,7 +318,5 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 		// 删除权限
 		privilegeMapper.deleteByPrimaryKey(privilegeId);
 	}
-	
-	
-	
+
 }

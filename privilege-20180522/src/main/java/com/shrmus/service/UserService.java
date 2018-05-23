@@ -1,5 +1,7 @@
 package com.shrmus.service;
 
+import java.util.List;
+
 import com.shrmus.pojo.User;
 
 public interface UserService {
@@ -11,4 +13,9 @@ public interface UserService {
 	void updateUser(User user);
 	
 	void deleteUser(Integer userId);
+
+	List<User> getUserList();
+
+	User getUserById(Integer userId);
+
 }

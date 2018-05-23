@@ -1,0 +1,6 @@
+a{text-decoration:none;}
+ul li {
+	float: left;
+	list-style: none;
+	width: auto;
+}

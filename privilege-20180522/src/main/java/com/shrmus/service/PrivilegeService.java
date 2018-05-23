@@ -22,4 +22,8 @@ public interface PrivilegeService {
 	
 	void deletePrivilege(Integer privilegeId);
 
+	List<Privilege> getParentPrivilegeList();
+
+	Privilege getPrivilegeById(Integer privilegeId);
+
 }

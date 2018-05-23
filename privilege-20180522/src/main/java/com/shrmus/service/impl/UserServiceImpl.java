@@ -61,6 +61,19 @@ public class UserServiceImpl implements UserService{
 		User user = userList.get(0);
 		return user;
 	}
+	
+	/**
+	 * 根据用户id获取用户信息
+	 */
+	@Override
+	public User getUserById(Integer userId) {
+		UserExample userExample = new UserExample();
+		com.shrmus.pojo.UserExample.Criteria criteria = userExample.createCriteria();
+		criteria.andUserIdEqualTo(userId);
+		List<User> userList = userMapper.selectByExample(userExample);
+		User user = userList.get(0);
+		return user;
+	}
 
 	/**
 	 * 修改用户的信息
@@ -82,6 +95,16 @@ public class UserServiceImpl implements UserService{
 		userPrivilegeMapper.deleteByExample(userPrivilegeExample);
 		// 删除用户
 		userMapper.deleteByPrimaryKey(userId);
+	}
+
+	/**
+	 * 查找所有用户
+	 */
+	@Override
+	public List<User> getUserList() {
+		UserExample userExample = new UserExample();
+		List<User> userList = userMapper.selectByExample(userExample);
+		return userList;
 	}
 	
 
