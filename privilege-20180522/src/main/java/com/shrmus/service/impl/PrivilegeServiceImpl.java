@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.shrmus.mapper.PrivilegeMapper;
+import com.shrmus.mapper.RoleMapper;
 import com.shrmus.mapper.RolePrivilegeMapper;
+import com.shrmus.mapper.UserMapper;
 import com.shrmus.mapper.UserPrivilegeMapper;
 import com.shrmus.mapper.UserRoleMapper;
 import com.shrmus.pojo.Privilege;
@@ -40,7 +42,11 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 	private UserPrivilegeMapper userPrivilegeMapper;
 	@Autowired
 	private UserRoleMapper userRoleMapper;
-
+	@Autowired
+	private UserMapper userMapper;
+	@Autowired
+	private RoleMapper roleMapper;
+	
 	/**
 	 * 查找所有父权限
 	 */
@@ -317,6 +323,22 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 		rolePrivilegeMapper.deleteByExample(rolePrivilegeExample);
 		// 删除权限
 		privilegeMapper.deleteByPrimaryKey(privilegeId);
+	}
+
+	/**
+	 * 根据分配权限的type和typeId查找信息
+	 */
+	@Override
+	public Object getObjectById(String type, Integer typeId) {
+		Object object = new Object();
+		if("role".equals(type)) {
+			object = roleMapper.selectByPrimaryKey(typeId);
+		}
+		else if("user".equals(type)) {
+			// 查找这个角色的信息
+			object = userMapper.selectByPrimaryKey(typeId);
+		}
+		return object;
 	}
 
 }

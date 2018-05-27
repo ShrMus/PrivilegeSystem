@@ -189,4 +189,9 @@
   	ur.role_id=r.role_id 
   	where user_id=#{userId} 
   </select>
+  
+  <!-- 查找最大的主键，未解决并发问题 -->
+  <select id="getMaxPrimaryKey" resultType="java.lang.Integer">
+  	select max(user_id) from user 
+  </select>
 </mapper>

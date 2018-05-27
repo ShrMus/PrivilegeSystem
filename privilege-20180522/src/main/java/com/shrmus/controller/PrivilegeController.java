@@ -1,5 +1,7 @@
 package com.shrmus.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.shrmus.pojo.Privilege;
@@ -26,6 +29,60 @@ public class PrivilegeController {
 	@Autowired
 	private PrivilegeService privilegeService;
 	
+	/**
+	 * 分配权限
+	 * @param modelAndView
+	 * @return
+	 */
+	@RequestMapping("/privilege/allocation/{type}/{typeId}")
+	public ModelAndView allocationPrivilege(@RequestParam(value="privilegeIds",required=false) Integer[] privilegeIds, //
+			@PathVariable("type") String type, @PathVariable("typeId") Integer typeId, ModelAndView modelAndView) {
+		if(null == type || "".equals(type)) {
+			modelAndView.setViewName("redirect:/main");
+			return modelAndView;
+		}
+		if(null == typeId) {
+			modelAndView.setViewName("redirect:/main");
+			return modelAndView;
+		}
+		List<Integer> privilegeList = new ArrayList<>();
+		if(null != privilegeIds) {
+			privilegeList = Arrays.asList(privilegeIds);
+		}
+		privilegeService.allocationPrivileges(type,typeId,privilegeList);
+		modelAndView.setViewName("redirect:/" + type + "/list");
+		return modelAndView;
+	}
+	
+	/**
+	 * 跳转到分配权限的页面
+	 * @param modelAndView
+	 * @return
+	 */
+	@RequestMapping("/privilege/allocationui/{type}/{typeId}")
+	public ModelAndView allocationPrivilegeUI(@PathVariable("type") String type, // 
+			@PathVariable("typeId") Integer typeId, ModelAndView modelAndView) {
+		if(null == type || "".equals(type)) {
+			modelAndView.setViewName("redirect:/main");
+			return modelAndView;
+		}
+		if(null == typeId) {
+			modelAndView.setViewName("redirect:/main");
+			return modelAndView;
+		}
+		// 查找所有权限
+		List<Privilege> privilegeList = privilegeService.getParentPrivilegeList();
+		modelAndView.addObject("privilegeList", privilegeList);
+		// 查找用户或角色的信息
+		Object object = privilegeService.getObjectById(type,typeId);
+		modelAndView.addObject("object", object);
+		// 给角色授权还是给用户授权
+		modelAndView.addObject("type", type);
+		// 保留id
+		modelAndView.addObject("typeId", typeId);
+		modelAndView.setViewName("privilege/allocation");
+		return modelAndView;
+	}
 	
 	/**
 	 * 删除权限
@@ -54,7 +111,7 @@ public class PrivilegeController {
 	@RequestMapping("/privilege/update")
 	public ModelAndView updatePrivilege(Privilege privilege,ModelAndView modelAndView) {
 		privilegeService.updatePrivilege(privilege);
-		modelAndView.setViewName("privilege/list");
+		modelAndView.setViewName("redirect:/privilege/list");
 		return modelAndView;
 	}
 	
@@ -88,7 +145,7 @@ public class PrivilegeController {
 	@RequestMapping("/privilege/add")
 	public ModelAndView addPrivilege(Privilege privilege,ModelAndView modelAndView) {
 		privilegeService.addPrivilege(privilege);
-		modelAndView.setViewName("privilege/list");
+		modelAndView.setViewName("redirect:/privilege/list");
 		return modelAndView;
 	}
 	

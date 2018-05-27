@@ -29,7 +29,7 @@
 				<td>
 					<a class="layui-btn" href="${pageContext.request.contextPath}/role/updateui/${role.roleId}">修改</a>|
 					<a class="layui-btn" href="${pageContext.request.contextPath}/role/delete/${role.roleId}">删除</a>|
-					<a class="layui-btn" href="${pageContext.request.contextPath}/privilege/roleui/${role.roleId}">分配权限</a>
+					<a class="layui-btn" href="${pageContext.request.contextPath}/privilege/allocationui/role/${role.roleId}">分配权限</a>
 				</td>
 			</tr>
 			</c:forEach>

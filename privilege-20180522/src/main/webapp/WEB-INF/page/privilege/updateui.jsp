@@ -17,7 +17,7 @@
     <div class="blog-body">
 		<form class="layui-form" action="${pageContext.request.contextPath}/privilege/update" method="post">
 			<input type="hidden" name="privilegeId" value="${privilege.privilegeId}">
-			<table class="layui-table" lay-size="lg" width="100%">
+			<table class="layui-table">
 				<tr>
 					<td>父权限</td>
 					<td>

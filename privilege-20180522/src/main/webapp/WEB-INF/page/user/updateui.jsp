@@ -15,29 +15,29 @@
 	<jsp:include page="/banner.jsp"/>
     <div class="blog-body">
 			<form class="layui-form" id="form-updateuser" action="${pageContext.request.contextPath}/user/update" method="post">
-			<input type="hidden" name="userId" value="${user.userId}"/>
-			<table class="layui-table" lay-size="lg" width="100%">
-				<%-- <tr>
+			<table class="layui-table">
+				<tr>
 					<td>角色</td>
 					<td>
-						<select name="roleId">
-							<c:forEach var="role" items="${roleList}">
-							<option value="${role.id}" 
-							<c:if test="${user.userRoleList[0].id eq role.id}">selected="selected"</c:if>>
-							${role.name}
-							</option>
-							</c:forEach>
-						</select>
+						<c:forEach var="role" items="${roleList}">
+							<label><input type="checkbox" name="roleId" value="${role.roleId}" 
+							<c:if test="${fn:contains(user.userRoleList,role)}">checked</c:if>
+							/>${role.roleName}</label><br>
+						</c:forEach>
+						<span style="color:red;">选择角色这里用js控制至少选择一个角色</span>
 					</td>
-				</tr> --%>
+				</tr>
 				<tr>
 					<td>用户名</td>
-					<td><input class="layui-input" type="text" name="userUsername" value="${user.userUsername}" readonly="readonly"/></td>
+					<td>
+						<input type="hidden" name="userId" value="${userinfo.userId}"/>
+						<input class="layui-input" type="text" name="userUsername" value="${userinfo.userUsername}" readonly="readonly"/>
+					</td>
 				</tr>
 				
 				<tr>
 					<td>密　码</td>
-					<td><input class="layui-input" type="password" name="password" value="${user.userPassword}"/></td>
+					<td><input class="layui-input" type="password" name="userPassword" value="${userinfo.userPassword}"/></td>
 				</tr>
 				<tr>
 					<td colspan="2" align="center">

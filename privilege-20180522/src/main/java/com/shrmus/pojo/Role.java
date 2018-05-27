@@ -30,6 +30,11 @@ public class Role {
     public String getRoleName() {
         return roleName;
     }
+    
+
+	public String getPrivilegeName() {
+		return roleName;
+	}
 
     public void setRoleName(String roleName) {
         this.roleName = roleName == null ? null : roleName.trim();
@@ -58,4 +63,5 @@ public class Role {
 	public void setUserList(List<User> userList) {
 		this.userList = userList;
 	}
+	
 }

@@ -26,4 +26,6 @@ public interface PrivilegeService {
 
 	Privilege getPrivilegeById(Integer privilegeId);
 
+	Object getObjectById(String type, Integer typeId);
+
 }

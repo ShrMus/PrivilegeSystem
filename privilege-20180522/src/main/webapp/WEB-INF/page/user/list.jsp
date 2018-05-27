@@ -29,7 +29,7 @@
 			<td align="center">
 				<a class="layui-btn" href="${pageContext.request.contextPath}/user/updateui/${user.userId}">修改</a>|
 				<a style="margin-top:10px;" class="layui-btn" href="${pageContext.request.contextPath}/user/delete/${user.userId}">删除</a>|
-				<a style="margin-top:10px;" class="layui-btn" href="${pageContext.request.contextPath}/privilege/userui/${user.userId}">分配权限</a>
+				<a style="margin-top:10px;" class="layui-btn" href="${pageContext.request.contextPath}/privilege/allocationui/user/${user.userId}">分配权限</a>
 			</td>
 		</tr>
 		</c:forEach>

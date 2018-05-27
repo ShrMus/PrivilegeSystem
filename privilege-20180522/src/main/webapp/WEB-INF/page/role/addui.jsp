@@ -16,7 +16,7 @@
     <!-- 主体（一般只改变这里的内容） -->
     <div class="blog-body">
 		<form action="${pageContext.request.contextPath}/role/add" method="post">
-			<table class="layui-table" lay-size="lg" width="100%">
+			<table class="layui-table">
 				<tr>
 					<td>角色名</td>
 					<td><input class="layui-input" type="text" name="roleName"/></td>

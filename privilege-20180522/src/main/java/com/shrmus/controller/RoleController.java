@@ -25,7 +25,7 @@ import com.shrmus.service.RoleService;
 public class RoleController {
 	@Autowired
 	private RoleService roleService;
-	
+
 	/**
 	 * 删除角色
 	 * @param roleId
@@ -53,7 +53,7 @@ public class RoleController {
 	@RequestMapping("/role/update")
 	public ModelAndView updateRole(Role role,ModelAndView modelAndView) {
 		roleService.updateRole(role);
-		modelAndView.setViewName("role/list");
+		modelAndView.setViewName("redirect:/role/list");
 		return modelAndView;
 	}
 	
@@ -85,7 +85,7 @@ public class RoleController {
 	@RequestMapping("/role/add")
 	public ModelAndView addRole(Role role,ModelAndView modelAndView) {
 		roleService.addRole(role);
-		modelAndView.setViewName("role/list");
+		modelAndView.setViewName("redirect:/role/list");
 		return modelAndView;
 	}
 	

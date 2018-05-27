@@ -30,6 +30,10 @@ public class User {
     public String getUserUsername() {
         return userUsername;
     }
+    
+	public String getPrivilegeName() {
+		return userUsername;
+	}
 
     public void setUserUsername(String userUsername) {
         this.userUsername = userUsername == null ? null : userUsername.trim();

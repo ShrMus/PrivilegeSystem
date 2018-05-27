@@ -41,9 +41,7 @@
                     <div class="shadow" style="text-align:center;font-size:16px;padding:40px 15px;background:#fff;margin-bottom:15px;height:600px;">
 	                    <div style="float:right;width:90%;">
 							<input class="input-userId" type="hidden" value="${requestScope.user.id}"/>
-							<%-- <object height="100%" width="100%" type="text/x-scriptlet" data="${pageContext.request.contextPath}/article/list"> --%>
-							<%-- <iframe class="iframe-src" src="${pageContext.request.contextPath}/user/info/${requestScope.user.id}" width="100%" height="1000px" scrolling="auto" frameborder="0"></iframe> --%>
-							<table class="layui-table" lay-size="lg" width="100%">
+							<table class="layui-table">
 								<tr>
 									<td>真实姓名</td>
 									<td>${user.realname}</td>

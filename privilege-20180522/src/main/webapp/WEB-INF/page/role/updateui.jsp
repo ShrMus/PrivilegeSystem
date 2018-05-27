@@ -15,7 +15,7 @@
 	<jsp:include page="/banner.jsp"/>
     <div class="blog-body">
 		<form action="${pageContext.request.contextPath}/role/update" method="post">
-			<table class="layui-table" lay-size="lg" width="100%">
+			<table class="layui-table">
 				<tr>
 					<td>ID</td>
 					<td><input class="layui-input" type="text" name="roleId" value="${role.roleId}" readonly="readonly"/></td>

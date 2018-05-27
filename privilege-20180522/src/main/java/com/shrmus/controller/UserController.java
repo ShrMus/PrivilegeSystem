@@ -1,5 +1,6 @@
 package com.shrmus.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +8,12 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
 
+import com.shrmus.pojo.Role;
 import com.shrmus.pojo.User;
+import com.shrmus.service.RoleService;
 import com.shrmus.service.UserService;
 
 /**
@@ -26,6 +29,8 @@ import com.shrmus.service.UserService;
 public class UserController {
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private RoleService roleService;
 	
 	/**
 	 * 删除用户
@@ -52,9 +57,17 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping("/user/update")
-	public ModelAndView updateUser(User user,ModelAndView modelAndView) {
+	public ModelAndView updateUser(@RequestParam(value="roleId",required=false) Integer[] roleIdArray, // 
+			User user,ModelAndView modelAndView) {
+		List<Role> roleList = new ArrayList<>();
+		for(Integer roleId : roleIdArray) {
+			Role role = new Role();
+			role.setRoleId(roleId);
+			roleList.add(role);
+		}
+		user.setUserRoleList(roleList);
 		userService.updateUser(user);
-		modelAndView.setViewName("user/list");
+		modelAndView.setViewName("redirect:/user/list");
 		return modelAndView;
 	}
 	
@@ -72,21 +85,32 @@ public class UserController {
 			return modelAndView;
 		}
 		User user = userService.getUserById(userId);
-		modelAndView.addObject("user", user);
+		modelAndView.addObject("userinfo", user);
+		List<Role> roleList = roleService.getRoleList();
+		modelAndView.addObject("roleList", roleList);
 		modelAndView.setViewName("user/updateui");
 		return modelAndView;
 	}
 	
 	/**
 	 * 添加用户
+	 * @param roleIdArray
 	 * @param user
 	 * @param modelAndView
 	 * @return
 	 */
 	@RequestMapping("/user/add")
-	public ModelAndView addUser(User user,ModelAndView modelAndView) {
+	public ModelAndView addUser(@RequestParam(value="roleId",required=false) Integer[] roleIdArray, // 
+											User user,ModelAndView modelAndView) {
+		List<Role> roleList = new ArrayList<>();
+		for(Integer roleId : roleIdArray) {
+			Role role = new Role();
+			role.setRoleId(roleId);
+			roleList.add(role);
+		}
+		user.setUserRoleList(roleList);
 		userService.addUser(user);
-		modelAndView.setViewName("user/list");
+		modelAndView.setViewName("redirect:/user/list");
 		return modelAndView;
 	}
 	
@@ -98,6 +122,8 @@ public class UserController {
 	@RequestMapping("/user/addui")
 	public ModelAndView addUserUI(ModelAndView modelAndView) {
 		modelAndView.setViewName("user/addui");
+		List<Role> roleList = roleService.getRoleList();
+		modelAndView.addObject("roleList", roleList);
 		return modelAndView;
 	}
 	
@@ -111,9 +137,10 @@ public class UserController {
 		List<User> userList = userService.getUserList();
 		modelAndView.addObject("userList", userList);
 		modelAndView.setViewName("user/list");
+		List<Role> roleList = roleService.getRoleList();
+		modelAndView.addObject("roleList", roleList);
 		return modelAndView;
 	}
-	
 	
 	/**
 	 * 跳转到主页
@@ -121,7 +148,7 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping("/main")
-	public ModelAndView toMain(View view,ModelAndView modelAndView) {
+	public ModelAndView toMain(ModelAndView modelAndView) {
 		modelAndView.setViewName("redirect:/index.jsp");
 		return modelAndView;
 	}

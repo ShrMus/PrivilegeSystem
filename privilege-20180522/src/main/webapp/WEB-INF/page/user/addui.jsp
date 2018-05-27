@@ -15,15 +15,14 @@
 	<jsp:include page="/banner.jsp"/>
     <div class="blog-body">
 		<form class="layui-form" action="${pageContext.request.contextPath}/user/add" method="post">
-			<table class="layui-table" lay-size="lg" width="100%">
+			<table class="layui-table">
 				<tr>
 					<td>角色</td>
 					<td>
-						<select name="roleId" lay-verify="">
 							<c:forEach var="role" items="${roleList}">
-							<option value="${role.roleId}" <c:if test="${role.roleId eq roleId}">selected</c:if>>${role.roleName}</option>
+							<label><input type="checkbox" name="roleId" value="${role.roleId}"/>${role.roleName}</label><br>
 							</c:forEach>
-						</select>
+							<span style="color:red;">选择角色这里用js控制至少选择一个角色</span>
 					</td>
 				</tr>
 				<tr>
