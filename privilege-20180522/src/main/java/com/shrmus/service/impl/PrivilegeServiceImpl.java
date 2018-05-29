@@ -132,8 +132,19 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 		// 如果已有权限为空就全添加到数据库
 		if(0 == privilegeList.size()) {
 			for(Integer privilegeId : allocationPrivilegeList) {
+				// 添加角色权限
 				RolePrivilege rolePrivilege = new RolePrivilege(roleId,privilegeId);
 				rolePrivilegeMapper.insert(rolePrivilege);
+				
+				// 给拥有这个角色的用户添加这个权限
+				UserRoleExample userRoleExample = new UserRoleExample();
+				com.shrmus.pojo.UserRoleExample.Criteria userRoleExampleCriteria = userRoleExample.createCriteria();
+				userRoleExampleCriteria.andRoleIdEqualTo(roleId);
+				List<UserRole> userRoleList = userRoleMapper.selectByExample(userRoleExample);
+				for(UserRole userRole : userRoleList) {
+					UserPrivilege userPrivilege = new UserPrivilege(userRole.getUserId(), privilegeId);
+					userPrivilegeMapper.insert(userPrivilege);
+				}
 			}
 		}else {
 			// 如果不为空，先保存角色已有的权限
@@ -148,14 +159,22 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 					RolePrivilege rolePrivilege = new RolePrivilege(roleId,privilegeId);
 					rolePrivilegeMapper.insert(rolePrivilege);
 					
-					// 给拥有这个角色的用户添加这个权限
+					// TODO 给拥有这个角色的用户添加这个权限,用户分配了权限之后，角色再分配这个权限，会出现重复数据
 					UserRoleExample userRoleExample = new UserRoleExample();
 					com.shrmus.pojo.UserRoleExample.Criteria userRoleExampleCriteria = userRoleExample.createCriteria();
 					userRoleExampleCriteria.andRoleIdEqualTo(roleId);
 					List<UserRole> userRoleList = userRoleMapper.selectByExample(userRoleExample);
 					for(UserRole userRole : userRoleList) {
-						UserPrivilege userPrivilege = new UserPrivilege(userRole.getUserId(), privilegeId);
-						userPrivilegeMapper.insert(userPrivilege);
+						// 查找用户是否有这个权限
+						UserPrivilegeExample userPrivilegeExample = new UserPrivilegeExample();
+						com.shrmus.pojo.UserPrivilegeExample.Criteria userPrivilegeExampleCriteria = userPrivilegeExample.createCriteria();
+						userPrivilegeExampleCriteria.andUserIdEqualTo(userRole.getUserId());
+						userPrivilegeExampleCriteria.andPrivilegeIdEqualTo(privilegeId);
+						List<UserPrivilege> userPrivilegeList = userPrivilegeMapper.selectByExample(userPrivilegeExample);
+						if(0 == userPrivilegeList.size()) {
+							UserPrivilege userPrivilege = new UserPrivilege(userRole.getUserId(), privilegeId);
+							userPrivilegeMapper.insert(userPrivilege);
+						}
 					}
 				}
 			}

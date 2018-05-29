@@ -137,6 +137,13 @@ public class UserServiceImpl implements UserService{
 				userRoleMapper.deleteByExample(userRoleExample2);
 			}
 		}
+		for(Integer roleId : roleIdList) {
+			// 如果用户原来的角色不包含这个角色，添加用户的角色
+			if(!userRoleIdList.contains(roleId)) {
+				UserRole userRole = new UserRole(userId, roleId);
+				userRoleMapper.insert(userRole);
+			}
+		}
 		
 		// 修改用户的权限
 		// 查找用户需要修改的角色的权限
@@ -171,7 +178,13 @@ public class UserServiceImpl implements UserService{
 				userPrivilegeMapper.deleteByExample(userPrivilegeExample2);
 			}
 		}
-		
+		for(Integer privilegeId : privilegeIdList) {
+			// 如果用户原来的权限不包含这个权限，添加用户的权限
+			if(!userPrivilegeIdList.contains(privilegeId)) {
+				UserPrivilege userPrivilege = new UserPrivilege(userId, privilegeId);
+				userPrivilegeMapper.insert(userPrivilege);
+			}
+		}
 		// 修改用户的信息
 		userMapper.updateByPrimaryKeySelective(user);
 	}
@@ -186,6 +199,11 @@ public class UserServiceImpl implements UserService{
 		Criteria criteria = userPrivilegeExample.createCriteria();
 		criteria.andUserIdEqualTo(userId);
 		userPrivilegeMapper.deleteByExample(userPrivilegeExample);
+		// 删除用户的角色
+		UserRoleExample userRoleExample = new UserRoleExample();
+		com.shrmus.pojo.UserRoleExample.Criteria criteria2 = userRoleExample.createCriteria();
+		criteria2.andUserIdEqualTo(userId);
+		userRoleMapper.deleteByExample(userRoleExample);
 		// 删除用户
 		userMapper.deleteByPrimaryKey(userId);
 	}

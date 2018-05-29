@@ -21,7 +21,7 @@
 					<td>
 						<c:forEach var="role" items="${roleList}">
 							<label><input type="checkbox" name="roleId" value="${role.roleId}" 
-							<c:if test="${fn:contains(user.userRoleList,role)}">checked</c:if>
+							<c:if test="${fn:contains(userRoleIdList,role.roleId)}">checked</c:if>
 							/>${role.roleName}</label><br>
 						</c:forEach>
 						<span style="color:red;">选择角色这里用js控制至少选择一个角色</span>

@@ -176,7 +176,7 @@ public class Init {
 		user1.setUserUsername("admin");
 		user1.setUserPassword("admin");
 		
-		// 给这个用户分配超级管理员角色 TODO 暂时只做了一个用户一个角色的情况
+		// 给这个用户分配超级管理员角色
 		RoleService roleService = ac.getBean(RoleService.class);
 		Role role = roleService.getRoleByName("超级管理员");
 		

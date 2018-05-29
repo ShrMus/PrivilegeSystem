@@ -86,6 +86,12 @@ public class UserController {
 		}
 		User user = userService.getUserById(userId);
 		modelAndView.addObject("userinfo", user);
+		List<Role> userRoleList = user.getUserRoleList();
+		List<Integer> userRoleIdList = new ArrayList<>();
+		for(Role role : userRoleList) {
+			userRoleIdList.add(role.getRoleId());
+		}
+		modelAndView.addObject("userRoleIdList", userRoleIdList);
 		List<Role> roleList = roleService.getRoleList();
 		modelAndView.addObject("roleList", roleList);
 		modelAndView.setViewName("user/updateui");
