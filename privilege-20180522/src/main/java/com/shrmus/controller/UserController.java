@@ -3,6 +3,9 @@ package com.shrmus.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.shrmus.pojo.Role;
 import com.shrmus.pojo.User;
@@ -31,6 +35,39 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private RoleService roleService;
+	
+	/**
+	 * 退出系统
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/user/logout")
+	public String logout(HttpSession session) {
+		session.removeAttribute("user");
+		session.invalidate();
+		return "redirect:/main";
+	}
+	
+	/**
+	 * 登录
+	 * @param user
+	 * @param modelAndView
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/user/login")
+	public ModelAndView loginUser(User user,ModelAndView modelAndView,HttpServletRequest request,RedirectAttributes redirectAttributes) {
+		user = userService.loginUser(user);
+		if(null == user) {
+			// redirectAttributes.addFlashAttribute("message1", "用户名或密码不正确");
+			redirectAttributes.addAttribute("message", "用户名或密码不正确！");
+			modelAndView.setViewName("redirect:/login.jsp");
+			return modelAndView;
+		}
+		request.getSession().setAttribute("user", user);
+		modelAndView.setViewName("redirect:/index.jsp");
+		return modelAndView;
+	}
 	
 	/**
 	 * 删除用户

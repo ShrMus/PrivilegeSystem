@@ -43,6 +43,23 @@ public class UserServiceImpl implements UserService{
 	private RolePrivilegeMapper rolePrivilegeMapper;
 
 	/**
+	 * 登录
+	 */
+	public User loginUser(User user) {
+		UserExample userExample = new UserExample();
+		com.shrmus.pojo.UserExample.Criteria criteria = userExample.createCriteria();
+		criteria.andUserUsernameEqualTo(user.getUserUsername());
+		criteria.andUserPasswordEqualTo(user.getUserPassword());
+		List<User> userList = userMapper.selectByExample(userExample);
+		if(0 == userList.size()) {
+			return null;
+		}else {
+			user = userList.get(0);
+			return user;
+		}
+	}
+	
+	/**
 	 * 添加用户
 	 */
 	@Transactional

@@ -37,11 +37,11 @@ public class MyUrlFilter implements Filter{
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
-		// 获得工程名和访问路径 /synconize-integral/user/login
+		// 获得工程名和访问路径 /privilege-20180522/user/login
 		// System.out.println(request.getRequestURI());
-		// 获得地址栏全路径  http://localhost:8080/synconize-integral/user/login
+		// 获得地址栏全路径  http://localhost:8080/privilege-20180522/user/login
 		// System.out.println(request.getRequestURL());
-		// 获得工程名 /synconize-integral
+		// 获得工程名 /privilege-20180522
 		// System.out.println(request.getContextPath());
 		
 		// 获得工程下的访问路径 /user/login

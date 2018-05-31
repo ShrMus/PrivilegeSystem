@@ -15,6 +15,8 @@
 	<jsp:include page="/banner.jsp"/>
     <div class="blog-body">
        	<form action="${pageContext.request.contextPath}/user/login" method="post">
+       		<%-- <div><span style="color:red;">${sessionScope['org.springframework.web.servlet.support.SessionFlashMapManager.FLASH_MAPS'][0]['message1']}</span></div> --%>
+       		<div><span style="color:red;">${param.message}</span></div>
        		<table class="layui-table" lay-size="lg">
        			<tr>
        				<td>用户名</td>

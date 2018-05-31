@@ -2,6 +2,7 @@
 /privilege/add
 /privilege/update
 /privilege/delete
+/privilege/allocation
 /role/add
 /role/list
 /role/update

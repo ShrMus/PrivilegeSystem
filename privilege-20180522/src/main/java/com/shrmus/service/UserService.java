@@ -18,4 +18,6 @@ public interface UserService {
 
 	User getUserById(Integer userId);
 
+	User loginUser(User user);
+
 }

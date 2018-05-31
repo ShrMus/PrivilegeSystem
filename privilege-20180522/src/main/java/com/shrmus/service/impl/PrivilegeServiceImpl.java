@@ -126,12 +126,12 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 	 * @param roleId
 	 * @param allocationPrivilegeList
 	 */
-	private void allocationRolePrivileges(Integer roleId, List<Integer> allocationPrivilegeList) {
+	private void allocationRolePrivileges(Integer roleId, List<Integer> allocationPrivilegeIdList) {
 		// 根据id获得所有的权限
-		List<Privilege> privilegeList = privilegeMapper.getPrivilegeListByRoleId(roleId);
+		List<Privilege> rolePrivilegeList = privilegeMapper.getPrivilegeListByRoleId(roleId);
 		// 如果已有权限为空就全添加到数据库
-		if(0 == privilegeList.size()) {
-			for(Integer privilegeId : allocationPrivilegeList) {
+		if(0 == rolePrivilegeList.size()) {
+			for(Integer privilegeId : allocationPrivilegeIdList) {
 				// 添加角色权限
 				RolePrivilege rolePrivilege = new RolePrivilege(roleId,privilegeId);
 				rolePrivilegeMapper.insert(rolePrivilege);
@@ -148,18 +148,18 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 			}
 		}else {
 			// 如果不为空，先保存角色已有的权限
-			List<Integer> ownedPrivilegeList = new ArrayList<Integer>();
-			for(Privilege privilege:privilegeList) {
-				ownedPrivilegeList.add(privilege.getPrivilegeId());
+			List<Integer> rolePrivilegeIdList = new ArrayList<Integer>();
+			for(Privilege privilege : rolePrivilegeList) {
+				rolePrivilegeIdList.add(privilege.getPrivilegeId());
 			}
 			// 先将角色没有的权限添加，已有权限是否包含privilegeArray
-			for(Integer privilegeId : allocationPrivilegeList) {
+			for(Integer privilegeId : allocationPrivilegeIdList) {
 				// 角色是否已有这个权限，如果没有就添加，如果有就什么都不做
-				if(false == ownedPrivilegeList.contains(privilegeId)) {
+				if(false == rolePrivilegeIdList.contains(privilegeId)) {
 					RolePrivilege rolePrivilege = new RolePrivilege(roleId,privilegeId);
 					rolePrivilegeMapper.insert(rolePrivilege);
 					
-					// TODO 给拥有这个角色的用户添加这个权限,用户分配了权限之后，角色再分配这个权限，会出现重复数据
+					// 给拥有这个角色的用户添加这个权限,用户分配了权限之后，角色再分配这个权限，会出现重复数据
 					UserRoleExample userRoleExample = new UserRoleExample();
 					com.shrmus.pojo.UserRoleExample.Criteria userRoleExampleCriteria = userRoleExample.createCriteria();
 					userRoleExampleCriteria.andRoleIdEqualTo(roleId);
@@ -186,9 +186,9 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 				查找用户其他角色的权限
 				其他权限没有就删除，有就什么都不做
 			 */
-			for(Integer privilegeId : ownedPrivilegeList) {
+			for(Integer privilegeId : rolePrivilegeIdList) {
 				// 如果角色原来分配的权限不在现在被分配的权限集合中，就删除这个权限，如果还在，就什么都不做
-				if(false == allocationPrivilegeList.contains(privilegeId)) {
+				if(false == allocationPrivilegeIdList.contains(privilegeId)) {
 					// 给拥有这个角色的用户删除这个权限
 					// 查找拥有这个角色的用户
 					UserRoleExample userRoleExample = new UserRoleExample();
@@ -216,9 +216,9 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 								com.shrmus.pojo.RolePrivilegeExample.Criteria criteria = rolePrivilegeExample.createCriteria();
 								criteria.andRoleIdEqualTo(userRole2.getRoleId());
 								criteria.andPrivilegeIdEqualTo(privilegeId);
-								List<RolePrivilege> rolePrivilegeList = rolePrivilegeMapper.selectByExample(rolePrivilegeExample);
+								List<RolePrivilege> rolePrivilegeList1 = rolePrivilegeMapper.selectByExample(rolePrivilegeExample);
 								// 这个用户的其他角色也有这个权限
-								if(0 != rolePrivilegeList.size()) {
+								if(0 != rolePrivilegeList1.size()) {
 									tag2 = true;
 									break;
 								}
@@ -230,7 +230,6 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 								break;
 							}
 						}
-						
 						if(true == tag1) {
 							break;
 						}

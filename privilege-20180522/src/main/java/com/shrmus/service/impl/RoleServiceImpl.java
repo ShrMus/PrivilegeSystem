@@ -107,7 +107,7 @@ public class RoleServiceImpl implements RoleService{
 		criteria.andRoleIdEqualTo(roleId);
 		List<RolePrivilege> rolePrivilegeList = rolePrivilegeMapper.selectByExample(rolePrivilegeExample);
 		
-		// 删除拥有这个角色的用户的权限 TODO 没有考虑用户其他角色也拥有这个权限的情况
+		// 删除拥有这个角色的用户的权限
 		// 查找拥有这个角色的用户
 		UserRoleExample userRoleExample = new UserRoleExample();
 		com.shrmus.pojo.UserRoleExample.Criteria userRoleExampleCriteria = userRoleExample.createCriteria();
