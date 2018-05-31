@@ -30,9 +30,6 @@
 						<li><input lay-skin="primary" name="privilegeIds"
 							type="checkbox" value="${privilege.privilegeId}"
 							<%-- 已有的权限回显 --%>
-<%-- <c:forEach var="i" begin="0" end="${fn:length(object.privilegeList)}" items="${object.privilegeList}" step="1">
-	<c:if test="${privilege.id eq i}">checked="checked"</c:if>
-</c:forEach> --%>
 <c:if test="${myel:contains(object.privilegeList,privilege)}">checked="checked"</c:if> />
 							${privilege.privilegeName}</li>
 						<br>
@@ -42,9 +39,6 @@
 								<li><input lay-skin="primary" name="privilegeIds"
 									type="checkbox" value="${childPrivilege.privilegeId}"
 									<%-- 已有的权限回显 --%>
-<%-- <c:forEach var="i" begin="0" end="${fn:length(object.privilegeList)}" items="${object.privilegeList}" step="1">
-	<c:if test="${childPrivilege.id eq i}">checked="checked"</c:if>
-</c:forEach> --%>
 <c:if test="${myel:contains(object.privilegeList,childPrivilege)}">checked="checked"</c:if> />
 									${childPrivilege.privilegeName}</li>
 								<br>

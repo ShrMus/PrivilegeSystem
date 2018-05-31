@@ -158,11 +158,11 @@ public class Init {
 		role1 = roleService.getRoleByName("超级管理员");
 		PrivilegeService privilegeService = ac.getBean(PrivilegeService.class);
 		List<Privilege> privilegeList = privilegeService.getPrivilegeList();
-		List<Integer> allocationPrivilegeList = new ArrayList<>();
+		List<Integer> rolePrivilegeIdList = new ArrayList<>();
 		for(Privilege privilege : privilegeList) {
-			allocationPrivilegeList.add(privilege.getPrivilegeId());
+			rolePrivilegeIdList.add(privilege.getPrivilegeId());
 		}
-		privilegeService.allocationPrivileges("role", role1.getRoleId(), allocationPrivilegeList);
+		privilegeService.allocationPrivileges("role", role1.getRoleId(), rolePrivilegeIdList);
 	}
 	
 	/**

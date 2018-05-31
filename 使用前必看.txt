@@ -1,0 +1,2 @@
+导入数据库结构之后，打开src/test/java的com.shrmus.test的Init.java
+依次运行initPrivilege，initRole，initUser，完成初始化

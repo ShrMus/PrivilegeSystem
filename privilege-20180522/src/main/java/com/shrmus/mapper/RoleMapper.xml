@@ -6,7 +6,7 @@
     <result column="role_name" jdbcType="VARCHAR" property="roleName" />
     <result column="role_description" jdbcType="VARCHAR" property="roleDescription" />
     <collection column="role_id" property="privilegeList" select="com.shrmus.mapper.PrivilegeMapper.getPrivilegeListByRoleId" />
-    <collection column="role_id" property="userList" select="com.shrmus.mapper.UserMapper.getUsergeListByRoleId" />
+    <collection column="role_id" property="userList" select="com.shrmus.mapper.UserMapper.getUserListByRoleId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>

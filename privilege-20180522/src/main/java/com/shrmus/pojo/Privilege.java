@@ -13,6 +13,9 @@ public class Privilege {
     
     private Privilege parentPrivilege;
     
+    /**
+     * 子权限列表
+     */
     private List<Privilege> childPrivilegeList;
     
     @Override

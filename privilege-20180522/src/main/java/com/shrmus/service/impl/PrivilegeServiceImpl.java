@@ -257,7 +257,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 	}
 	
 	/**
-	 * 给用户分配权限，暂时只做到一个用户一个角色的情况
+	 * 给用户分配权限
 	 * @param userId
 	 * @param allocationPrivilegeList
 	 */

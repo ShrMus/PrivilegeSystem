@@ -182,7 +182,7 @@
   </update>
   
   <!-- 根据角色id查找拥有这个角色的所有用户 -->
-  <select id="getUsergeListByRoleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="getUserListByRoleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
   	select r.role_id,r.role_name 
   	from user_role ur 
   	left join role r on 
