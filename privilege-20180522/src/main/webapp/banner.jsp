@@ -15,9 +15,19 @@
 		<ul>
 			<li><span style="color:black;"><b>权限管理系统</b></span>&nbsp;</li>
 			<li><a href="${pageContext.request.contextPath}/main">首页</a>&nbsp;</li>
-			<li><a href="${pageContext.request.contextPath}/privilege/list">权限管理</a>&nbsp;</li>
+			<%-- <li><a href="${pageContext.request.contextPath}/privilege/list">权限管理</a>&nbsp;</li>
 			<li><a href="${pageContext.request.contextPath}/role/list">角色管理</a>&nbsp;</li>
-			<li><a href="${pageContext.request.contextPath}/user/list">用户管理</a>&nbsp;</li>
+			<li><a href="${pageContext.request.contextPath}/user/list">用户管理</a>&nbsp;</li> --%>
+			
+			<c:if test="${!empty sessionScope.user.privilegeList}">
+				<c:forEach var="privilege" items="${sessionScope.user.privilegeList}">
+			        <c:if test="${privilege.privilegeParentId eq 0}">
+			        <li class="layui-nav-item">
+			            <a href="${pageContext.request.contextPath}${privilege.privilegeUrl}">&nbsp;${privilege.privilegeName}&nbsp;</a>
+			        </li>
+			        </c:if>
+		        </c:forEach>
+        	</c:if>
 		</ul>
 	</div>
 	<div>
