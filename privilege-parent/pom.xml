@@ -16,7 +16,7 @@
 		<spring.version>4.3.11.RELEASE</spring.version>
 		<jackson.version>2.9.0</jackson.version>
 		<jackson.solr.version>2.5.4</jackson.solr.version>
-		<fastjson.version>1.2.41</fastjson.version>
+		<fastjson.version>1.2.83</fastjson.version>
 		<commons-beanutils.version>1.9.3</commons-beanutils.version>
 		<commons-collections4.version>4.1</commons-collections4.version>
 		<commons-lang3.version>3.6</commons-lang3.version>
